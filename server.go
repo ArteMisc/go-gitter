@@ -1,12 +1,14 @@
 package gitter
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 )
 
 const serverTimeout = time.Second * 20
 
+// Server
 type Server struct {
 	c *Config
 }
@@ -19,7 +21,7 @@ func New(conf *Config) *Server {
 // Address returns the address that the Server should listen on, if started
 // using Server.Run().
 func (s *Server) Address() string {
-	return s.c.Host
+	return fmt.Sprintf("%s:%d", s.c.Host, s.c.Port)
 }
 
 // Handler returns a http.Handler that handles requests based on the Server's
@@ -38,12 +40,15 @@ func (s *Server) Handler() http.Handler {
 }
 
 // HttpServer returns an *http.Server that serves the gitter's requests.
-func (s *Server) HttpServer() *http.Server {
-	return &http.Server{
-		Addr:      s.Address(),
-		Handler:   s.Handler(),
-		TLSConfig: s.c.Tls.Config,
+func (s *Server) HttpServer() (srv *http.Server) {
+	srv = &http.Server{
+		Addr:    s.Address(),
+		Handler: s.Handler(),
 	}
+	if s.c.Tls != nil {
+		srv.TLSConfig = s.c.Tls.Config
+	}
+	return
 }
 
 // ListenAndServe starts the server in http (non-encrypted) mode.

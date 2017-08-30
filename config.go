@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/tls"
 	"fmt"
+	"log"
 	"net/http"
 	"text/template"
 )
@@ -43,6 +44,8 @@ type Config struct {
 	// Packages holds a list of packages for which the gitter Server should
 	// serve redirects.
 	Packages []*Package `json:"packages"`
+
+	// TODO logger configuration
 }
 
 // TlsConfig specifies the server's TLS configuration. If the Config field is
@@ -101,6 +104,7 @@ func (p *Package) HttpHandler() http.Handler {
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		_, _ = w.Write(data)
+		log.Printf("Served %s%s\n", r.Host, r.RequestURI)
 	})
 }
 
