@@ -3,10 +3,7 @@ package gitter
 import (
 	"fmt"
 	"net/http"
-	"time"
 )
-
-const serverTimeout = time.Second * 20
 
 // Server
 type Server struct {
