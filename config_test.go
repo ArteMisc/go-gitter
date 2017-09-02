@@ -21,10 +21,10 @@ func TestPackage_HtmlBody(t *testing.T) {
 	body := (&Package{
 		Name: "go.artemisc.eu/gitter",
 		Git: Repo{
-			Host: "github.com",
+			Host:     "github.com",
 			Username: "ArteMisc",
-			Package: "go-gitter",
-			Branch: "master",
+			Package:  "go-gitter",
+			Branch:   "master",
 		},
 	}).HtmlBody()
 
